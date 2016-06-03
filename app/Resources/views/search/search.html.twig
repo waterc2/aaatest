@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="col-lg-offset-4">
+		<form action="{{path('_search')}}" method="get">
+			<div class="input-group col-lg-6 ">
+				<input type="text" name="k" id="keyword" class="form-control input-lg" placeholder="search twitter" value="{{keyword}}" />
+				<span class="input-group-btn">
+					<button class="btn btn-info btn-lg" type="submit">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</span>
+			</div>
+		</form>
+</div>
+<div class="col-lg-offset-1">
+	<div class="col-lg-7">
+{% if keyword!='' %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+					<span>{{count}} result(s)</span>
+			</div>
+			<div class="panel-body">
+					<ul class = "list-group">
+					{% for twitter in result %}
+						<li class = "list-group-item"><b>{{ twitter.user.name }}</b>: {{ twitter.text }} {{ twitter.id_str }}</li>				
+					{% endfor %}
+					</ul>
+
+					<span class="pull-right"> 
+							<ul class="pager">
+								<li><a {% if prev!=0 %}href="{{path('_search')}}?k={{keyword}}&prev={{prev}}"{%endif%} rel="prev">&laquo;</a></li>
+								<li><a {% if next!=0 %}href="{{path('_search')}}?k={{keyword}}&next={{next}}"{%endif%} rel="next">&raquo;</a></li>
+							</ul>
+					</span>
+			</div>
+		</div>
+{% endif %}
+	</div>
+	<div class="col-lg-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+					<span>Search history</span>
+			</div>
+			<div class="panel-body">
+					<ul class = "list-group">
+					{% for term in searchlog %}
+						<li class = "list-group-item">{{term}}</li>				
+					{% endfor %}
+					</ul>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
